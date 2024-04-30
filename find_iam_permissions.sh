@@ -28,7 +28,7 @@ function check_variables () {
 }
 
 function find_permissions_in_logs () {
-    gcloud logging read "protoPayload.authenticationInfo.principalEmail=${EMAIL}" --freshness=${DAYS}d --project=$(gcloud config list --format 'value(core.project)') --format json | jq -r '.[].protoPayload? | .authorizationInfo[] | [.permission,.resource] | join(",")'|sort -u
+    gcloud logging read "protoPayload.authenticationInfo.principalEmail=${EMAIL}" --freshness=${DAYS}d --project=$(gcloud config list --format 'value(core.project)') --format json | jq -r '.[] | .protoPayload.authorizationInfo[0].permission' |sort -u
 }
 
 #check_variables
